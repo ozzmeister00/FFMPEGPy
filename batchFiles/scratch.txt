@@ -1,0 +1,14 @@
+to output a gif from an image sequence
+ffmpeg.exe -f image2 -framerate 30 -i Input.%04d.png -loop -0 output.gif
+
+From Image to Sequence:
+ffmpeg.exe -i input.m4v -vf "select='not(mod(n,10))',setpts='N/(30*TB)'" -f image2 output.%04d.png
+
+From gif to images
+ffmpeg -i input/Clap.gif -vsync 0 temp/temp%d.png
+
+To mp4
+ffmpeg.exe -framerate 30 -s 1920x1080 -i Input.%04d.png -c:v libx264 -r 30 output.mp4
+
+Scale Gif Down
+ffmpeg -y -i input.gif -filter_complex "fps=15,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=32[p];[s1][p]paletteuse=dither=bayer" output.gif
